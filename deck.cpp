@@ -9,7 +9,7 @@
 
 //using namespace std;
 
-Deck::Deck() {
+deck::deck() {
     int k=0;
     suit R_suit;
     bool flag = 0;
@@ -33,7 +33,7 @@ Deck::Deck() {
 
 }
 
-void Deck::show() {
+void deck::show() {
     //int k=0;
     for (auto & deckOfCard : deckOfCards){
         //k++;
@@ -43,11 +43,15 @@ void Deck::show() {
     }
 }
 
-void Deck::shuffle() {
+void deck::shuffle() {
     srand(time(0));
     for (int i=0; i < 52; i++){
         int randNum = rand() % 10 + 1;
         swap(deckOfCards[i],deckOfCards[randNum]);
     }
+}
+
+card deck::getCard(int i) {
+    return deckOfCards[i];
 }
 

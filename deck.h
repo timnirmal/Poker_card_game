@@ -8,13 +8,14 @@
 #include "card.h"
 #include <vector>
 
-class Deck : public card{
-    vector<card> deckOfCards;
+class deck {
 
 public:
-    Deck();
+    vector<card> deckOfCards;
+    deck();
     void show();
     void shuffle();
+    card getCard(int i);
 
 };
 

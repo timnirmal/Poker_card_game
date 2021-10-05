@@ -6,6 +6,7 @@ enum suit {clubs, heart, spades, diamond};
 //♣0 ♥1 ♠2 ♦3
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
     void setValue(int v,suit st);
     int getValue();
     suit getSuit();
+    int getSuitValue();
 };
 
 
