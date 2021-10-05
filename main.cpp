@@ -13,14 +13,17 @@ int main() {
     //cards.setValue(2,heart);
     //cards.display_card();
 
-    Deck decks;
+    Deck deckOfCards;
 
-    decks.show();
-    decks.show();
-    cout<<endl;
-    decks.show();
-    cout<<endl;
-    decks.shuffle();
+    deckOfCards.show();
+    deckOfCards.shuffle();
+
+    wcout << endl;
+
+    wcout << endl;
+    deckOfCards.show();
+    wcout << endl;
+
 
     return 0;
 }

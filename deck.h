@@ -6,9 +6,10 @@
 #define POKER_CARD_GAME_DECK_H
 
 #include "card.h"
+#include <vector>
 
 class Deck : public card{
-    card deckOfCards[52];
+    vector<card> deckOfCards;
 
 public:
     Deck();

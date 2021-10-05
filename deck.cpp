@@ -5,6 +5,8 @@
 #include "deck.h"
 #include <bits/stdc++.h>
 
+#include <random>
+
 //using namespace std;
 
 Deck::Deck() {
@@ -21,30 +23,31 @@ Deck::Deck() {
                 case 2: R_suit = spades;     break;
                 case 3: R_suit = diamond;    break;
             }
-            deckOfCards[k].setValue(j,R_suit);
-            k++;
+            card newCard;
+            newCard.setValue(j,R_suit);
+            deckOfCards.push_back(newCard);
         }
     }
-
-    cout<<"\nDeck Created\t";
-    int length=sizeof(deckOfCards)/sizeof(int);
-    cout<<length<<" \n";
+    deckOfCards.resize(52);
+    wcout<<"\nDeck Created\t\n";
 
 }
 
 void Deck::show() {
-    for (int i=0; i< 52;i++){
-        deckOfCards[i].display_card();
+    //int k=0;
+    for (auto & deckOfCard : deckOfCards){
+        //k++;
+        //wcout<<k<<" ";
+        deckOfCard.display_card();
+        //wcout<<"  ";
     }
-    cout<<endl;
 }
 
 void Deck::shuffle() {
-    //random_shuffle(deckOfCards[0],deckOfCards[length-1]);
-
+    srand(time(0));
     for (int i=0; i < 52; i++){
-        deckOfCards[i].display_card();
+        int randNum = rand() % 10 + 1;
+        swap(deckOfCards[i],deckOfCards[randNum]);
     }
-    //show();
 }
 
