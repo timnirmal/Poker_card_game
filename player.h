@@ -25,6 +25,7 @@ public:
     void getHand();
     card getHandCard(int i);
     int score();
+    card highCard();
 
     string getName();
 };

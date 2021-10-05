@@ -46,10 +46,6 @@ int player::score() {
 // ♣0 ♥1 ♠2 ♦3
 
     //Taking values and suites to two arrays
-    hand[0].getValue();
-    hand[0].getSuit();
-
-
     wcout<<endl<<"Card = ";
     for (int i=0; i<5; i++) {
         hand[i].display_card();
@@ -58,7 +54,6 @@ int player::score() {
 
     int arrVal[15];
     int arrSuit[4];
-
 
     for (int i=0; i<4; i++) {
         arrSuit[i] = 0;
@@ -103,19 +98,18 @@ int player::score() {
         wcout << arrVal[i] << " ";
     }
 
-    int highCard, onePair, twoPair, threeKind, straight, flush, fullHouse, fourKind, straightFlush;
-    highCard = onePair = twoPair = threeKind = straight = flush = fullHouse = fourKind = straightFlush = 0;
+    int highCard, onePair, twoPair, threeKind, straight, flush, fullHouse, fourKind, straightFlush, sameSuit;
+    highCard = onePair = twoPair = threeKind = straight = flush = fullHouse = fourKind = straightFlush = sameSuit = 0;
     //Straight Flush - All have same suite
 
     for (int i=0; i<4; i++) {
-        if ( arrSuit[i] == 5){
-            //straightFlush = 1;
-            return 9;
+        if ( (arrSuit[0] == 5) || (arrSuit[1] == 5) || (arrSuit[2] == 5) || (arrSuit[3] == 5)){
+            straightFlush = 1;
+            //But need to be checked if straight
         }
-        else if ((arrSuit[0] + arrSuit[2]) == 5 || (arrSuit[1] + arrSuit[3]) == 5 ){
-            //flush = 1;
-            return 6;
-        }
+    }
+    if ((arrSuit[0] + arrSuit[2]) == 5 || (arrSuit[1] + arrSuit[3]) == 5 || straightFlush == 1){
+        flush = 1;
     }
 
     for (int i=0; i<14; i++) {
@@ -133,13 +127,21 @@ int player::score() {
 
     for (int i=1; i<11; i++) {
        if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
-            //straight = 1;
-           return 5;
+           straight = 1;
         }
     }
 
-    if (threeKind == 1 && onePair == 1){
+    if ((straightFlush == 1) && (straight == 1)){
+        return 9;
+    }
+    else if (threeKind == 1 && onePair == 1){
         return 7;
+    }
+    if (flush == 1){
+        return 6;
+    }
+    else if (straight == 1){
+        return 5;
     }
     else if (threeKind == 1) {
         return 4;
@@ -153,6 +155,22 @@ int player::score() {
     else {
         return 0;
     }
+}
+
+card player::highCard() {
+    card tempCard;
+    tempCard = hand[0];
+
+    for (int i = 0; i < 4; i++) {
+        if (hand[i].getValue() < hand[i+1].getValue()){
+            tempCard = hand[i+1];
+        }
+    }
+    wcout <<endl;
+    tempCard.display_card();
+    wcout <<endl;
+
+    return tempCard;
 }
 
 //1. High card: None of the following combinations and highest card value is considered (2-2, 3-3, …, 10-10, Jack-11, Queen-12, King-13, Aces-14)

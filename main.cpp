@@ -77,14 +77,14 @@ int main() {
 
 
 
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < 4; j++) {
         wcout<< "Score = "<< Player[j].score();
+        Player[j].highCard();
         wcout<<endl;
     }
 
     //Players cards are hiden
     //Dealers cards are visible
-
 
     return 0;
 }
