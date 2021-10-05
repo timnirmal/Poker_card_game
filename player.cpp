@@ -109,16 +109,19 @@ int player::score() {
 
     for (int i=0; i<4; i++) {
         if ( arrSuit[i] == 5){
-            straightFlush = 1;
+            //straightFlush = 1;
+            return 9;
         }
         else if ((arrSuit[0] + arrSuit[2]) == 5 || (arrSuit[1] + arrSuit[3]) == 5 ){
-            flush = 1;
+            //flush = 1;
+            return 6;
         }
     }
 
-    for (int i=0; i<15; i++) {
+    for (int i=0; i<14; i++) {
         if ( arrVal[i] == 4){
-            fourKind = 1;
+            //fourKind = 1;
+            return 8;
         }
         else if ( arrVal[i] == 3){
             threeKind = 1;
@@ -130,25 +133,13 @@ int player::score() {
 
     for (int i=1; i<11; i++) {
        if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
-            straight = 1;
-            wcout << "||||||||\t Straight \t|||||||||";
+            //straight = 1;
+           return 5;
         }
     }
 
-    if (straightFlush == 1) {
-        return 9;
-    }
-    else if (fourKind == 1){
-        return 8;
-    }
-    else if (threeKind == 1 && onePair == 1){
+    if (threeKind == 1 && onePair == 1){
         return 7;
-    }
-    else if (flush == 1){
-        return 6;
-    }
-    else if (straight == 1) {
-        return 5;
     }
     else if (threeKind == 1) {
         return 4;
