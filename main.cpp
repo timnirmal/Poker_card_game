@@ -78,7 +78,7 @@ int main() {
 
 
     for (int j = 0; j < 5; j++) {
-            Player[j].score();
+        wcout<< "Score = "<< Player[j].score();
         wcout<<endl;
     }
 

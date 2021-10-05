@@ -35,7 +35,7 @@ card player::getHandCard(int i) {
     return hand[i];
 }
 
-void player::score() {
+int player::score() {
     vector<card> hand_Copy;
 
     //for (int i=0; i< 5; i++){
@@ -49,18 +49,12 @@ void player::score() {
     hand[0].getValue();
     hand[0].getSuit();
 
-    hand[0].setValue(1,heart);
-    hand[1].setValue(2,heart);
-    hand[2].setValue(3,heart);
-    hand[3].setValue(4,heart);
-    hand[4].setValue(5,heart);
 
-    wcout<<"Card = "<<endl;
+    wcout<<endl<<"Card = ";
     for (int i=0; i<5; i++) {
         hand[i].display_card();
         wcout<<" ";
     }
-    wcout<<endl;
 
     int arrVal[15];
     int arrSuit[4];
@@ -99,7 +93,7 @@ void player::score() {
         }
     }
 
-    wcout << endl<<endl;
+    wcout << endl;
 
     for (int i=0; i<4; i++) {
         wcout << arrSuit[i] << " ";
@@ -135,27 +129,39 @@ void player::score() {
     }
 
     for (int i=1; i<11; i++) {
-        wcout<<endl<<"Checking Straight"<<endl;
-        //wcout<< i << " "<< arrVal[i] << "  "<< i+1 << " "<< arrVal[i+1] <<
-        //"  "<< i+2 <<" "<< arrVal[i+2] << "  "<< i+3 << " "<< arrVal[i+4] << "  "<< i+4 << " "<< arrVal[i+5] << "  "<<endl;
-        wcout<< arrVal[i] << "  "<< arrVal[i+1] <<
-             " "<< arrVal[i+2] << "  "<< arrVal[i+3] << "  "<< arrVal[i+4] << "  "<<endl;
-        if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
+       if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
             straight = 1;
             wcout << "||||||||\t Straight \t|||||||||";
         }
     }
 
-    /*
     if (straightFlush == 1) {
-        straightFlush;
+        return 9;
     }
-    if (onePair == 1 && threeKind == 1){
-
+    else if (fourKind == 1){
+        return 8;
     }
-    else if () {
-
-    }*/
+    else if (threeKind == 1 && onePair == 1){
+        return 7;
+    }
+    else if (flush == 1){
+        return 6;
+    }
+    else if (straight == 1) {
+        return 5;
+    }
+    else if (threeKind == 1) {
+        return 4;
+    }
+    else if (onePair == 2) {
+        return 3;
+    }
+    else if (onePair == 1) {
+        return 2;
+    }
+    else {
+        return 0;
+    }
 }
 
 //1. High card: None of the following combinations and highest card value is considered (2-2, 3-3, …, 10-10, Jack-11, Queen-12, King-13, Aces-14)

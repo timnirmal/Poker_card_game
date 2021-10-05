@@ -24,7 +24,7 @@ public:
     int getId();
     void getHand();
     card getHandCard(int i);
-    void score();
+    int score();
 
     string getName();
 };
