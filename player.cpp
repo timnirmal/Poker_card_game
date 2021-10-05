@@ -49,7 +49,20 @@ void player::score() {
     hand[0].getValue();
     hand[0].getSuit();
 
-    int arrVal[14];
+    hand[0].setValue(1,heart);
+    hand[1].setValue(2,heart);
+    hand[2].setValue(3,heart);
+    hand[3].setValue(4,heart);
+    hand[4].setValue(5,heart);
+
+    wcout<<"Card = "<<endl;
+    for (int i=0; i<5; i++) {
+        hand[i].display_card();
+        wcout<<" ";
+    }
+    wcout<<endl;
+
+    int arrVal[15];
     int arrSuit[4];
 
 
@@ -57,7 +70,7 @@ void player::score() {
         arrSuit[i] = 0;
     }
 
-    for (int i=0; i<14; i++) {
+    for (int i=0; i<15; i++) {
         arrVal[i] = 0;
     }
 
@@ -70,19 +83,19 @@ void player::score() {
         }
 
         switch (hand[i].getValue()) {
-            case 1: wcout << " 1 & 14 " <<hand[i].getValue()<<endl;arrSuit[1]++; arrSuit[14]++; break;
-            case 2: wcout << " 2 " <<hand[i].getValue()<<endl;arrSuit[2]++; break;
-            case 3: wcout << " 3 " <<hand[i].getValue()<<endl;arrSuit[3]++; break;
-            case 4: wcout << " 4 " <<hand[i].getValue()<<endl;arrSuit[4]++; break;
-            case 5: wcout << " 5 " <<hand[i].getValue()<<endl;arrSuit[5]++; break;
-            case 6: wcout << " 6 " <<hand[i].getValue()<<endl;arrSuit[6]++; break;
-            case 7: wcout << " 7 " <<hand[i].getValue()<<endl;arrSuit[7]++; break;
-            case 8: wcout << " 8 " <<hand[i].getValue()<<endl;arrSuit[8]++; break;
-            case 9: wcout << " 9 " <<hand[i].getValue()<<endl;arrSuit[9]++; break;
-            case 10:wcout << " 10 " <<hand[i].getValue()<<endl; arrSuit[10]++; break;
-            case 11:wcout << " 11 " <<hand[i].getValue()<<endl; arrSuit[11]++; break;
-            case 12:wcout << " 12 " <<hand[i].getValue()<<endl; arrSuit[12]++; break;
-            case 13:wcout << " 13 " <<hand[i].getValue()<<endl; arrSuit[13]++; break;
+            case 1: arrVal[1]++; arrVal[14]++; break;
+            case 2: arrVal[2]++; break;
+            case 3: arrVal[3]++; break;
+            case 4: arrVal[4]++; break;
+            case 5: arrVal[5]++; break;
+            case 6: arrVal[6]++; break;
+            case 7: arrVal[7]++; break;
+            case 8: arrVal[8]++; break;
+            case 9: arrVal[9]++; break;
+            case 10: arrVal[10]++; break;
+            case 11: arrVal[11]++; break;
+            case 12: arrVal[12]++; break;
+            case 13: arrVal[13]++; break;
         }
     }
 
@@ -92,7 +105,7 @@ void player::score() {
         wcout << arrSuit[i] << " ";
     }
     wcout << endl;
-    for (int i=0; i<14; i++) {
+    for (int i=1; i<15; i++) {
         wcout << arrVal[i] << " ";
     }
 
@@ -109,7 +122,7 @@ void player::score() {
         }
     }
 
-    for (int i=0; i<14; i++) {
+    for (int i=0; i<15; i++) {
         if ( arrVal[i] == 4){
             fourKind = 1;
         }
@@ -118,6 +131,18 @@ void player::score() {
         }
         else if ( arrVal[i] == 2){
             onePair++;
+        }
+    }
+
+    for (int i=1; i<11; i++) {
+        wcout<<endl<<"Checking Straight"<<endl;
+        //wcout<< i << " "<< arrVal[i] << "  "<< i+1 << " "<< arrVal[i+1] <<
+        //"  "<< i+2 <<" "<< arrVal[i+2] << "  "<< i+3 << " "<< arrVal[i+4] << "  "<< i+4 << " "<< arrVal[i+5] << "  "<<endl;
+        wcout<< arrVal[i] << "  "<< arrVal[i+1] <<
+             " "<< arrVal[i+2] << "  "<< arrVal[i+3] << "  "<< arrVal[i+4] << "  "<<endl;
+        if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
+            straight = 1;
+            wcout << "||||||||\t Straight \t|||||||||";
         }
     }
 
