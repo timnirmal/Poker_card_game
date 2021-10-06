@@ -52,8 +52,7 @@ int player::score() {
         wcout<<" ";
     }
 
-    int arrVal[15];
-    int arrSuit[4];
+
 
     for (int i=0; i<4; i++) {
         arrSuit[i] = 0;
@@ -157,49 +156,71 @@ int player::score() {
     }
 }
 
+void player::setPlayerScore(int val) {
+    playerScore = val;
+}
+
+void player::setPlayerHandScore(int val) {
+    playerHandScore = val;
+}
+
 card player::highCard() {
-    wcout <<endl;
     card tempCard;
     tempCard = hand[0];
-    wcout << " "<<tempCard.getValueA() << " ";
-    wcout <<endl;
-    wcout <<endl;
-
-
-    int arrVal[5];
-
-    for (int i=0; i<5; i++) {
-        arrVal[i] = hand[i].getValueA();
-    }
-
-    for (int i=0; i<5; i++) {
-        //wcout << arrVal[i];
-    }
-
-  /*  int maxNum = hand[0].getValueA();
-    for(int i = 1;i < 5; i++) {
-
-        if(maxNum < hand[i].getValueA()){
-            maxNum = hand[i].getValueA();
-        }
-    }*/
-
-
 
     for (int i = 0; i < 4; i++) {
-        //wcout << " "<<hand[i].getValue() << " "<<hand[i+1].getValue() << " ";
-        //wcout <<endl;
         if (tempCard.getValueA() < hand[i+1].getValueA()){
-            //wcout << hand[i].getValueA() << "  "<< hand[i+1].getValueA() << "  ";
             tempCard = hand[i+1];
-            //tempCard.display_card();
-            //wcout <<endl;
         }
     }
-    tempCard.display_card();
-    wcout <<endl;
-
     return tempCard;
+}
+
+int player::OnePair() {
+    // 0 A 2 3 4 5 6 7 8 9 10 J Q K A
+    // 0 1 2 ....
+    for (int i=0; i<14; i++) {
+       if ( arrVal[i] == 2){
+           // i = value (A , 2, K )
+           return i;
+       }
+    }
+}
+
+int player::TwoPair() {
+    int pair = 0;
+    for (int i=0; i<14; i++) {
+        if ( arrVal[i] == 2){
+            if (pair < i){
+                pair = i;
+            }
+        }
+    }
+    return pair;
+}
+
+int player::ThreePair() {
+    for (int i=0; i<14; i++) {
+        if ( arrVal[i] == 3){
+            return i;
+        }
+    }
+}
+
+int player::straight() {
+    for (int i=1; i<11; i++) {
+        if ( (arrVal[i] == 1) && (arrVal[i+1] == 1) && (arrVal[i+2] == 1) && (arrVal[i+3] == 1) && (arrVal[i+4] == 1)){
+            return (i+4);
+        }
+    }
+}
+
+int player::FourPair() {
+    for (int i=0; i<14; i++) {
+        if ( arrVal[i] == 4){
+            return i;
+        }
+    }
 }
 
 //1. High card: None of the following combinations and highest card value is considered (2-2, 3-3, …, 10-10, Jack-11, Queen-12, King-13, Aces-14)
@@ -212,6 +233,8 @@ card player::highCard() {
 // 7. Full house: three of a kind and one pair. (combination 2 and combination 3)
 //8. Four of a kind: four cards with same value.
 // 9. Straight Flush: Straight in which the cards have the same suite
+
+
 
 // High card as else
 // One Pair, Two Pairs
