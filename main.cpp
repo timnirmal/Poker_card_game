@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 
 #include "deck.h"
 #include "player.h"
@@ -10,6 +11,8 @@ bool tie = false;
 vector<int> tiePositions;   //Clear at each round
 
 int player::nextId = 0;
+bool finish = 0;
+bool effectEnable = 1;
 
 int checkHighCard(card c1, card c2, int p1, int p2) {
     wcout << "\nChecking High Card "<< endl;
@@ -52,6 +55,20 @@ int checkOnePair (int c1, int c2, int p1, int p2) {
     }
 }
 
+//Text Animations
+void textLoader(string txt){
+    vector<char> LoaderTXT(txt.begin(), txt.end());
+    for (const char &c: LoaderTXT) {
+        //Switch Based on Effects Settings
+        if (effectEnable == true) {
+            wcout << "G";
+            Sleep(30);
+            wcout<< "\b ";
+            Sleep(40);
+        }
+        std::wcout << c;
+    }
+}
 
 int main() {
 
@@ -279,6 +296,66 @@ int main() {
     wcout << "                                                                                                    ";
 
     wcout << "\nPoker Game";
+
+
+    int inpNum;
+
+    while (true) {
+        if (finish) {    //Check termination conditions
+            return 0;
+        }
+
+        ////Main menu
+        wcout << "1. Start" << endl;
+        wcout << "2. How to Play" << endl;
+        wcout << "3. Settings" << endl;
+        wcout << "4. Exit" << endl;
+
+        wcout << "\nEnter number : ";
+        wcin >> inpNum;
+        wcout << endl;
+
+        //Start
+        if (inpNum == 1) {
+            //puzzleGen();
+        }
+            //How to Play
+        else if (inpNum == 2) {
+
+        }
+            //Settings
+        else if (inpNum == 3) {
+            system("cls");
+            wcout<<endl;
+            wcout << "\t * * * Settings * * *" << endl;
+            wcout<< "\nCurrent Settings : \n\tEffects : "<<effectEnable;
+            //cout <<  "\n\tLevel : "<<Level<<endl;
+
+            char inp;
+
+            wcout<< "\n\nChange Effect (y/n) : ";
+            cin>>inp;
+            if(inp=='y' || inp=='Y'){
+                effectEnable = !effectEnable;
+            }else{
+                effectEnable = effectEnable;
+            }
+
+            cout<<"Changed Effects : "<<effectEnable<<endl<<endl;
+        }
+            //Exit
+        else if (inpNum == 4) {
+            system("cls");
+            textLoader("\nExiting.....");
+            wcout<<endl<<endl;
+            wcout<< "\tThank you for Playing";
+            wcout<<endl<<endl;
+            finish = true;
+        }
+    }
+
+
+
     return 0;
 }
 
