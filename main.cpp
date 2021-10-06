@@ -60,11 +60,10 @@ int main() {
     //cards.setValue(2,heart);
     //cards.display_card();
 
-
-
     int numPlayers = 3;
     int numRounds = 10;
 
+    ////////////////////////////////////////////////  Create Player
     wcout << endl << "Create Players\n";
 
     vector<player> Player;  //Player[0] is the dealer
@@ -73,6 +72,7 @@ int main() {
     wcout << endl << "Create Players Done\n";
 
     for (int i = 0; i < 2; i++) {
+        ////////////////////////////////////////////////  Deck Create and Shuffle
         deck deckOfCards;
 
         deckOfCards.show();
@@ -87,6 +87,7 @@ int main() {
         wcout << endl;
         wcout << endl;
 
+        ////////////////////////////////////////////////  Card Distribution
         //erase first two values
         deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
         deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
@@ -123,7 +124,7 @@ int main() {
 
         wcout << endl;
 
-
+        ////////////////////////////////////////////////  Calculate Scores
         //Calculating Score of Each Player
         int highCardCount = 0;      //Count if all are high cards.
         int tempScore;              // to Keep player score of each round of each player
@@ -240,18 +241,44 @@ int main() {
         wcout << "Winner is " << winnerPosition << "   Score : " << tempHighScore;
         wcout << "\n\nOthers Score \n";
         for (int i = 0; i < 4; i++) {
-            tempScore = Player[i].getPlayerHandScore();
-            Player[i].addPlayerScore(tempScore);
+            //tempScore = Player[i].getPlayerHandScore();
+            //Player[i].addPlayerScore(tempScore);
             wcout << "Player " << i << "   Score : " << tempScore << "   Total Score : " << Player[i].getPlayerScore()
                   << endl;
         }
 
+        ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen
+        // But the score is not the actual value goes into Score Board.
+
         //Players cards are hiden
         //Dealers cards are visible
+
+        // Probability
+        // User Can Leave round if he wants
+        //
+
+
+
+
 
         tiePositions.clear();
         tie = false;
     }
+
+    wcout << "\n";
+    wcout << "$$$$$$$\\            $$\\                                  $$$$$$\\                                    \n";
+    wcout << "$$  __$$\\           $$ |                                $$  __$$\\                                   \n";
+    wcout << "$$ |  $$ | $$$$$$\\  $$ |  $$\\  $$$$$$\\   $$$$$$\\        $$ /  \\__| $$$$$$\\  $$$$$$\\$$$$\\   $$$$$$\\  \n";
+    wcout << "$$$$$$$  |$$  __$$\\ $$ | $$  |$$  __$$\\ $$  __$$\\       $$ |$$$$\\  \\____$$\\ $$  _$$  _$$\\ $$  __$$\\ \n";
+    wcout << "$$  ____/ $$ /  $$ |$$$$$$  / $$$$$$$$ |$$ |  \\__|      $$ |\\_$$ | $$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |\n";
+    wcout << "$$ |      $$ |  $$ |$$  _$$<  $$   ____|$$ |            $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|\n";
+    wcout << "$$ |      \\$$$$$$  |$$ | \\$$\\ \\$$$$$$$\\ $$ |            \\$$$$$$  |\\$$$$$$$ |$$ | $$ | $$ |\\$$$$$$$\\ \n";
+    wcout << "\\__|       \\______/ \\__|  \\__| \\_______|\\__|             \\______/  \\_______|\\__| \\__| \\__| \\_______|\n";
+    wcout << "                                                                                                    \n";
+    wcout << "                                                                                                    \n";
+    wcout << "                                                                                                    ";
+
+    wcout << "\nPoker Game";
     return 0;
 }
 
