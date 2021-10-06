@@ -29,9 +29,12 @@ public:
     void getHand();
     card getHandCard(int i);
     int score();
+    int getPlayerHandScore();
+    int getPlayerScore();
 
 
     void setPlayerScore(int val);
+    void addPlayerScore(int val);
     void setPlayerHandScore(int val);
 
     // In cases of duplocated we need to compare between

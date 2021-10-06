@@ -12,6 +12,7 @@ player::player() {
     playerId = nextId++;
     playerName = "Tim";
     playerScore = 0;
+    playerHandScore = 0;
     hand.resize(5);
 }
 
@@ -164,6 +165,10 @@ void player::setPlayerHandScore(int val) {
     playerHandScore = val;
 }
 
+void player::addPlayerScore(int val) {
+    playerScore += val;
+}
+
 card player::highCard() {
     card tempCard;
     tempCard = hand[0];
@@ -222,6 +227,16 @@ int player::FourPair() {
         }
     }
 }
+
+int player::getPlayerHandScore() {
+    return playerHandScore;
+}
+
+int player::getPlayerScore() {
+    return playerScore;
+}
+
+
 
 //1. High card: None of the following combinations and highest card value is considered (2-2, 3-3, …, 10-10, Jack-11, Queen-12, King-13, Aces-14)
 //2. One pair: two cards with the same value.
