@@ -103,7 +103,7 @@ int player::score() {
     //Straight Flush - All have same suite
 
     for (int i=0; i<4; i++) {
-        if ( (arrSuit[0] == 5) || (arrSuit[1] == 5) || (arrSuit[2] == 5) || (arrSuit[3] == 5)){
+        if (arrSuit[i] == 5){
             straightFlush = 1;
             //But need to be checked if straight
         }
@@ -158,15 +158,44 @@ int player::score() {
 }
 
 card player::highCard() {
+    wcout <<endl;
     card tempCard;
     tempCard = hand[0];
+    wcout << " "<<tempCard.getValueA() << " ";
+    wcout <<endl;
+    wcout <<endl;
+
+
+    int arrVal[5];
+
+    for (int i=0; i<5; i++) {
+        arrVal[i] = hand[i].getValueA();
+    }
+
+    for (int i=0; i<5; i++) {
+        //wcout << arrVal[i];
+    }
+
+  /*  int maxNum = hand[0].getValueA();
+    for(int i = 1;i < 5; i++) {
+
+        if(maxNum < hand[i].getValueA()){
+            maxNum = hand[i].getValueA();
+        }
+    }*/
+
+
 
     for (int i = 0; i < 4; i++) {
-        if (hand[i].getValue() < hand[i+1].getValue()){
+        //wcout << " "<<hand[i].getValue() << " "<<hand[i+1].getValue() << " ";
+        //wcout <<endl;
+        if (tempCard.getValueA() < hand[i+1].getValueA()){
+            //wcout << hand[i].getValueA() << "  "<< hand[i+1].getValueA() << "  ";
             tempCard = hand[i+1];
+            //tempCard.display_card();
+            //wcout <<endl;
         }
     }
-    wcout <<endl;
     tempCard.display_card();
     wcout <<endl;
 

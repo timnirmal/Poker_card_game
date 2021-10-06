@@ -24,6 +24,7 @@ public:
     void display_card_without_symbols();
     void setValue(int v,suit st);
     int getValue();
+    int getValueA();
     suit getSuit();
     int getSuitValue();
 };

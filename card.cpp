@@ -67,3 +67,12 @@ int card::getSuitValue() {
         case 3: return 3; break;
     }
 }
+
+int card::getValueA() {
+    if (val == 1){
+        return 14;
+    }else {
+        return val;
+    }
+
+}
