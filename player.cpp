@@ -14,6 +14,7 @@ player::player() {
     playerScore = 0;
     playerHandScore = 0;
     hand.resize(5);
+    status = true;
 }
 
 string player::getName() {
@@ -242,6 +243,14 @@ void player::setPlayerName(string name) {
 
 string player::getPlayerName() {
     return playerName;
+}
+
+void player::setStatus(bool s) {
+    status = s;
+}
+
+bool player::getStatus() {
+    return status;
 }
 
 

@@ -15,6 +15,7 @@ class player {
     string playerName;
     int playerScore;
     int playerHandScore;
+    bool status;
 
 public:
     vector<card> hand;
@@ -33,6 +34,9 @@ public:
     int getPlayerScore();
     void setPlayerName(string name);
     string getPlayerName();
+
+    void setStatus(bool s);
+    bool getStatus();
 
 
     void setPlayerScore(int val);

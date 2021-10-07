@@ -1,5 +1,8 @@
 #include <iostream>
 #include <windows.h>
+#include <io.h>
+#include <fstream>
+#include <string>
 
 #include "deck.h"
 #include "player.h"
@@ -9,6 +12,8 @@
 
 bool tie = false;
 vector<int> tiePositions;   //Clear at each round
+vector <int> probability;
+vector <int> probability2;
 
 int player::nextId = 0;
 bool finish = 0;
@@ -71,6 +76,54 @@ void textLoader(string txt){
 }
 
 int main() {
+    //// File Stream
+    string dir = "C:\\Users\\timni\\Poker-card-game\\";
+
+    ifstream myReadFile;
+    myReadFile.open(dir + "probability.txt");
+    string output;
+    string s;
+
+    for (int i = 0; i < 12; ++i) {
+        probability2.push_back(0);
+    }
+
+
+    if (myReadFile.is_open()) {
+        while (!myReadFile.eof()) {
+            myReadFile >> output;
+            s = output;
+            probability.push_back( stoi(s) );
+        }
+    }
+
+    wcout << endl << s.c_str() <<endl;
+
+    wcout <<endl<< " File stream done\n\n";
+
+    for (int i = 0; i < 10; ++i) {
+        wcout<< probability[i];
+    }
+    wcout <<endl<< "\n\n File stream done";
+
+
+    /*
+    size_t pos = 0;
+    string delimiter = " ";
+    string token;
+
+    while ((pos = s.find(delimiter)) != string::npos) {
+        token = s.substr(0, pos);
+        if (item_count % 2 == 0){
+            date = token;
+        }if (item_count % 2 == 1){
+            account_number = token;
+        }
+        item_count++;
+        s.erase(0, pos + delimiter.length());
+    }
+    transaction_amount = s;
+*/
 
     card cards;
 
@@ -88,199 +141,8 @@ int main() {
 
     wcout << endl << "Create Players Done\n";
 
-    for (int i = 0; i < 2; i++) {
-        ////////////////////////////////////////////////  Deck Create and Shuffle
-        deck deckOfCards;
 
-        deckOfCards.show();
-
-        for (int j=0; j<=i; j++){
-            deckOfCards.shuffle();
-        }
-        wcout << endl;
-
-        wcout << endl;
-        deckOfCards.show();
-        wcout << endl;
-        wcout << endl;
-
-        ////////////////////////////////////////////////  Card Distribution
-        //erase first two values
-        deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
-        deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
-
-        wcout << endl;
-        deckOfCards.show();
-        wcout << endl;
-
-        for (int i = 0; i < 4; i++) {
-            card newCard;
-            //wcout << i.getName().c_str();
-            //copy 5 card to hand of each player
-            for (int j = 0; j < 5; j++) {
-                newCard.setValue(deckOfCards.deckOfCards.begin()->getValue(),
-                                 deckOfCards.deckOfCards.begin()->getSuit());
-                Player[i].hand[j] = newCard;
-                deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
-            }
-        }
-
-        wcout << endl;
-        Player[0].hand.back().display_card();
-        Player[0].getHandCard(0).display_card();
-        wcout << endl;
-
-        wcout << "displaycard\n\n";
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
-                Player[i].hand[j].display_card();
-            }
-            wcout << endl;
-        }
-
-        wcout << endl;
-
-        ////////////////////////////////////////////////  Calculate Scores
-        //Calculating Score of Each Player
-        int highCardCount = 0;      //Count if all are high cards.
-        int tempScore;              // to Keep player score of each round of each player
-        int arrScore[4]; //4 Players
-
-        for (int j = 0; j < 4; j++) {
-            tempScore = Player[j].score();
-
-            Player[j].setPlayerHandScore(tempScore);
-            arrScore[j] = tempScore;
-
-            if (tempScore == 0) {
-                highCardCount++;
-            }
-
-            wcout << "\nScore = " << tempScore;
-            wcout << "\tHigh Card = ";
-            Player[j].highCard().display_card();
-            wcout << endl;
-        }
-
-        wcout << endl;
-
-        for (int i = 0; i < 4; i++) {
-            wcout << arrScore[i] << " ";
-        }
-
-        int tempHighScore = arrScore[0];
-        int winnerPosition = 0;
-        int tempCount = 0;
-
-        for (int i = 0; i < 3; i++) {
-            if (tempHighScore < arrScore[i]) {
-                tempHighScore = arrScore[i];
-                winnerPosition = i;
-            }
-        }
-        wcout << endl << tempHighScore << " " << winnerPosition;
-
-        //Check if two people have The Highest Val
-        for (int i = 0; i < 4; i++) {
-            if (arrScore[i] == tempHighScore && winnerPosition != i) {
-                //wcout << "\nDuplicate";
-                switch (tempHighScore) {
-                    case 0:
-                    case 6:
-                        // 5 Cards have same color and Highest card win among players
-                        winnerPosition = checkHighCard(Player[winnerPosition].highCard(), Player[i].highCard(),
-                                                       winnerPosition, i);
-                        wcout << "\n\nWinner(0) = " << winnerPosition;
-                        break;
-                    case 2:
-                        winnerPosition = checkOnePair(Player[winnerPosition].OnePair(), Player[i].OnePair(),
-                                                      winnerPosition,
-                                                      i);
-                        wcout << "\n\nWinner(2) = " << winnerPosition;
-                        break;
-                    case 3:
-                        winnerPosition = checkOnePair(Player[winnerPosition].TwoPair(), Player[i].TwoPair(),
-                                                      winnerPosition,
-                                                      i);
-                        //The highest Pair comes to here
-                        wcout << "\n\nWinner(3) = " << winnerPosition;
-                        break;
-                    case 4:
-                        winnerPosition = checkOnePair(Player[winnerPosition].ThreePair(), Player[i].ThreePair(),
-                                                      winnerPosition, i);
-                        wcout << "\n\nWinner(4) = " << winnerPosition;
-                        break;
-                    case 5:
-                    case 9:
-                        winnerPosition = checkOnePair(Player[winnerPosition].straight(), Player[i].straight(),
-                                                      winnerPosition, i);
-                        wcout << "\n\nWinner(5/9) = " << winnerPosition;
-                        break;
-                    case 7:
-                        // Game Logic For Full House tie
-                        // First Higher Triples wins
-                        // If that gets equal then highest Pair Wins
-                        // If that also get equal both get points
-                        winnerPosition = checkOnePair(Player[winnerPosition].ThreePair(), Player[i].ThreePair(),
-                                                      winnerPosition, i);
-                        if (tie == true) {
-                            tie = false;
-                            winnerPosition = checkOnePair(Player[winnerPosition].TwoPair(), Player[i].TwoPair(),
-                                                          winnerPosition, i);
-                        }
-                        wcout << "\n\nWinner(7) = " << winnerPosition;
-                        break;
-                    case 8:
-                        winnerPosition = checkOnePair(Player[winnerPosition].FourPair(), Player[i].FourPair(),
-                                                      winnerPosition, i);
-                        wcout << "\n\nWinner(8) = " << winnerPosition;
-                        break;
-                }
-            }
-        }
-
-        // Now we have checked who wins
-        // If there are two winners and that also calculated.
-        // But if that also get tie then that part is to be added. (Scores will be given to both.)
-
-        /*
-            winnerPosition is the position of winner in Player array
-            Player[winnerPosition] is winner
-            tempHighScore is his score
-
-            Others score can be taken by playerHandScore
-
-         */
-
-
-        wcout << endl;
-        wcout << "Winner is " << winnerPosition << "   Score : " << tempHighScore;
-        wcout << "\n\nOthers Score \n";
-        for (int i = 0; i < 4; i++) {
-            //tempScore = Player[i].getPlayerHandScore();
-            //Player[i].addPlayerScore(tempScore);
-            wcout << "Player " << i << "   Score : " << tempScore << "   Total Score : " << Player[i].getPlayerScore()
-                  << endl;
-        }
-
-        ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen
-        // But the score is not the actual value goes into Score Board.
-
-        //Players cards are hiden
-        //Dealers cards are visible
-
-        // Probability
-        // User Can Leave round if he wants
-        //
-
-
-
-
-
-        tiePositions.clear();
-        tie = false;
-    }
+    ////////////////////////////////////////////////  UI Here
 
     wcout << "\n";
     wcout << "$$$$$$$\\            $$\\                                  $$$$$$\\                                    \n";
@@ -305,6 +167,7 @@ int main() {
         if (finish) {    //Check termination conditions
             return 0;
         }
+
 
         ////Main menu
         wcout << "1. Start" << endl;
@@ -335,6 +198,271 @@ int main() {
             for (int i = 2; i < numPlayers; ++i) {
                 Player[i].setPlayerName(playerNameSet[i]);
             }
+
+            for (int i = 0; i < 20000; i++) {
+                ////////////////////////////////////////////////  Deck Create and Shuffle
+                deck deckOfCards;
+
+                deckOfCards.show();
+
+                for (int j=0; j<=i; j++){
+                    deckOfCards.shuffle();
+                }
+                wcout << endl;
+
+                wcout << endl;
+                deckOfCards.show();
+                wcout << endl;
+                wcout << endl;
+
+                ////////////////////////////////////////////////  Card Distribution
+                //erase first two values
+                deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
+                deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
+
+                wcout << endl;
+                deckOfCards.show();
+                wcout << endl;
+
+                for (int i = 0; i < 4; i++) {
+                    card newCard;
+                    //wcout << i.getName().c_str();
+                    //copy 5 card to hand of each player
+                    for (int j = 0; j < 5; j++) {
+                        newCard.setValue(deckOfCards.deckOfCards.begin()->getValue(),
+                                         deckOfCards.deckOfCards.begin()->getSuit());
+                        Player[i].hand[j] = newCard;
+                        deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
+                    }
+                }
+
+                wcout << endl;
+                Player[0].hand.back().display_card();
+                Player[0].getHandCard(0).display_card();
+                wcout << endl;
+
+                wcout << "displaycard\n\n";
+
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        Player[i].hand[j].display_card();
+                    }
+                    wcout << endl;
+                }
+
+                wcout << endl;
+
+                ////////////////////////////////////////////////  Calculate Scores
+                //Calculating Score of Each Player
+                int highCardCount = 0;      //Count if all are high cards.
+                int tempScore;              // to Keep player score of each round of each player
+                int arrScore[4]; //4 Players
+
+                for (int j = 0; j < 4; j++) {
+                    tempScore = Player[j].score();  //Calculate Player score
+
+                    Player[j].setPlayerHandScore(tempScore);    //Set Player's this hand score
+
+                    /////////////////  We need to let players withdraw before moving further
+
+                    // For user
+                    if (j == 1) {
+                        wcout << "\nDo you need to Withdraw ? ";
+                        wcout << inpStr;
+                        wstring withdraw_s(inpStr);
+                        string withdraw_str(ws.begin(), ws.end());
+
+                        if (withdraw_str == "Y") {
+                            wcout << endl;
+                            Player[1].setStatus(false);
+                            wcout << "Wait Until Round Finish.\n";
+                        }
+                    }
+
+                    // For Other Players Except
+                    arrScore[j] = tempScore;    //Add score to the hand score array
+
+                    if (tempScore == 0) {   //Take if it is a high card combination
+                        highCardCount++;
+                    }
+
+                    wcout << "\nScore = " << tempScore;
+                    wcout << "\tHigh Card = ";
+                    Player[j].highCard().display_card();
+                    wcout << endl;
+                }
+
+                wcout << endl;
+
+                for (int i = 0; i < 4; i++) {
+                    wcout << arrScore[i] << " ";
+                }
+
+                int tempHighScore = arrScore[0];
+                int winnerPosition = 0;
+                int tempCount = 0;
+
+                int arrScoreLength = sizeof(arrScore)/sizeof(arrScore[0]);
+
+                for (int i = 0; i < arrScoreLength - 1; i++) {
+                    if (tempHighScore < arrScore[i]) {
+                        tempHighScore = arrScore[i];
+                        winnerPosition = i;
+                    }
+                }
+                wcout << endl << tempHighScore << " " << winnerPosition;
+
+            /*    //Check if two people have The Highest Val
+                for (int i = 0; i < 4; i++) {
+                    if (arrScore[i] == tempHighScore && winnerPosition != i) {
+                        //wcout << "\nDuplicate";
+                        switch (tempHighScore) {
+                            case 0:
+                            case 6:
+                                // 5 Cards have same color and Highest card win among players
+                                winnerPosition = checkHighCard(Player[winnerPosition].highCard(), Player[i].highCard(),
+                                                               winnerPosition, i);
+                                wcout << "\n\nWinner(0) = " << winnerPosition;
+                                break;
+                            case 2:
+                                winnerPosition = checkOnePair(Player[winnerPosition].OnePair(), Player[i].OnePair(),
+                                                              winnerPosition,
+                                                              i);
+                                wcout << "\n\nWinner(2) = " << winnerPosition;
+                                break;
+                            case 3:
+                                winnerPosition = checkOnePair(Player[winnerPosition].TwoPair(), Player[i].TwoPair(),
+                                                              winnerPosition,
+                                                              i);
+                                //The highest Pair comes to here
+                                wcout << "\n\nWinner(3) = " << winnerPosition;
+                                break;
+                            case 4:
+                                winnerPosition = checkOnePair(Player[winnerPosition].ThreePair(), Player[i].ThreePair(),
+                                                              winnerPosition, i);
+                                wcout << "\n\nWinner(4) = " << winnerPosition;
+                                break;
+                            case 5:
+                            case 9:
+                                winnerPosition = checkOnePair(Player[winnerPosition].straight(), Player[i].straight(),
+                                                              winnerPosition, i);
+                                wcout << "\n\nWinner(5/9) = " << winnerPosition;
+                                break;
+                            case 7:
+                                // Game Logic For Full House tie
+                                // First Higher Triples wins
+                                // If that gets equal then highest Pair Wins
+                                // If that also get equal both get points
+                                winnerPosition = checkOnePair(Player[winnerPosition].ThreePair(), Player[i].ThreePair(),
+                                                              winnerPosition, i);
+                                if (tie == true) {
+                                    tie = false;
+                                    winnerPosition = checkOnePair(Player[winnerPosition].TwoPair(), Player[i].TwoPair(),
+                                                                  winnerPosition, i);
+                                }
+                                wcout << "\n\nWinner(7) = " << winnerPosition;
+                                break;
+                            case 8:
+                                winnerPosition = checkOnePair(Player[winnerPosition].FourPair(), Player[i].FourPair(),
+                                                              winnerPosition, i);
+                                wcout << "\n\nWinner(8) = " << winnerPosition;
+                                break;
+                        }
+                    }
+                }*/
+
+                // Now we have checked who wins
+                // If there are two winners and that also calculated.
+                // But if that also get tie then that part is to be added. (Scores will be given to both.)
+
+                /*
+                    winnerPosition is the position of winner in Player array
+                    Player[winnerPosition] is winner
+                    tempHighScore is his score
+
+                    Others score can be taken by playerHandScore
+
+                 */
+
+
+                wcout << endl;
+                wcout << "Winner is " << winnerPosition << "   Score : " << tempHighScore;
+                probability2[tempHighScore]++;
+                wcout << "\n\nOthers Score \n";
+                for (int i = 0; i < 4; i++) {
+                    tempScore = Player[i].getPlayerHandScore();
+                    Player[i].addPlayerScore(tempScore);
+                    wcout << "Player " << i << "   Score : " << tempScore << "   Total Score : " << Player[i].getPlayerScore()
+                          << endl;
+                    probability[tempScore]++;
+
+                }
+
+                ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen
+                // But the score is not the actual value goes into Score Board.
+
+                //Players cards are hiden
+                //Dealers cards are visible
+
+                // Probability
+                // User Can Leave round if he wants
+                //
+
+                wcout <<endl<< "\n\n";
+
+                for (int i = 0; i < 10; ++i) {
+                    wcout<< probability[i] << " ";
+                }
+                wcout <<endl<< "\n\n File stream done\n";
+                for (int i = 0; i < 10; ++i) {
+                    wcout<< probability2[i] << " ";
+                }
+
+                wcout <<endl<< "\n\n";
+
+                ofstream outfile (dir + "probability.txt");
+                for (int i = 0; i < 10; ++i) {
+                    outfile << probability[i] <<endl;
+                }
+                for (int i = 0; i < 10; ++i) {
+                    outfile << probability2[i] <<endl;
+                }
+
+                outfile.close();
+
+
+                tiePositions.clear();
+                tie = false;
+
+                wcout<<"\n";
+                for (int i = 0; i < 10; ++i) {
+                    wcout<< probability[i] << " ";
+                }
+                wcout <<endl;
+
+                for (int i = 0; i < 10; ++i) {
+                    wcout<< probability2[i] << " ";
+                }
+                wcout <<endl;
+            }
+
+            wcout<<"\n";
+            for (int i = 0; i < 10; ++i) {
+                wcout<< probability[i] << " ";
+            }
+            wcout <<endl<< "\n\n File stream done";
+
+            for (int i = 0; i < 10; ++i) {
+                wcout<< probability2[i] << " ";
+            }
+
+
+            //// In here we need to let user and players to left the game
+            // Player [0] is Dealer
+            // Player [1] is Player
+            // Other Players are controlled by game logic.
+
+
         }
             //How to Play
         else if (inpNum == 2) {
@@ -369,9 +497,24 @@ int main() {
             wcout<<endl<<endl;
             finish = true;
         }
+
     }
 
 
+
+    //5.79121
+    //34.9811
+    //61.0685
+    //64.2276
+    //57.6271
+    //69.3639
+    //71.6981
+    //62.5
+    //45.7143
+
+    //Winning Probability if each Score comes.
+
+    // If probability is 20% > the players will play && Dealers Card
 
     return 0;
 }
