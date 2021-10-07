@@ -52,6 +52,7 @@ public:
     int FourPair();
 
     string getName();
+
 };
 
 

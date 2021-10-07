@@ -21,7 +21,6 @@ private:
 public:
     //card():val(0),s(0);
     void display_card();
-    void display_card_without_symbols();
     void setValue(int v,suit st);
     int getValue();
     int getValueA();

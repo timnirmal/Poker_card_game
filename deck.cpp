@@ -4,6 +4,8 @@
 
 #include "deck.h"
 #include <bits/stdc++.h>
+#include <windows.h>
+#include <unistd.h>
 
 #include <random>
 
@@ -29,17 +31,11 @@ deck::deck() {
         }
     }
     deckOfCards.resize(52);
-    wcout<<"\nDeck Created\t\n";
-
 }
 
 void deck::show() {
-    //int k=0;
     for (auto & deckOfCard : deckOfCards){
-        //k++;
-        //wcout<<k<<" ";
         deckOfCard.display_card();
-        //wcout<<"  ";
     }
 }
 
@@ -47,6 +43,15 @@ void deck::shuffle() {
     srand(time(0));
     for (int i=0; i < 52; i++){
         int randNum = rand() % 10 + 1;
+        deckOfCards[i].display_card();
+        wcout << " ";
+        deckOfCards[randNum].display_card();
+        wcout << "\t";
+        wprintf(L"\u25AE");
+        wcout << "   ";
+        Sleep(10);
+        wcout << "\r";
+        wcout << "\b\b";
         swap(deckOfCards[i],deckOfCards[randNum]);
     }
 }

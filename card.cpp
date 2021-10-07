@@ -11,7 +11,6 @@
 
 using namespace std;
 
-
 void card::display_card() {
     _setmode(_fileno(stdout), 0x00020000);  //For print _O_U16TEXT
     //Show value first
@@ -35,15 +34,6 @@ void card::display_card() {
         case 2: wprintf(L"\u2660"); break;
         case 3: wprintf(L"\u2666"); break;
     }
-}
-
-void card::display_card_without_symbols() {
-    _setmode(_fileno(stdout), 0x00020000);  //For print _O_U16TEXT
-    //Show value first
-    wcout<<val;
-
-    //Printing suit
-    wcout<<" "<<s;
 }
 
 void card::setValue(int v, suit st) {

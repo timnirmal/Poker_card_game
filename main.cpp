@@ -1,3 +1,24 @@
+/********************************************************************************
+ * Name             : Nirmal L.Y.T.
+ * Index No         : 19/ENG/072
+ * Registration No  : EN93921
+*********************************************************************************/
+
+/********************************************************************************
+ * In this Game we have Dealer, You as a Player and Other Players.
+ * By default there are 3 Players and Dealer & There are 10 rounds.
+ *
+ * The Dealer Plays with you but he don't gain any points.
+ * Their actions controlled by the programme. This is done by using Probability.
+ * For that the probability is calculated using 80,000 tests.
+ * Then that values multiplied with a random value to give some randomness.
+ *
+ * Happy Gaming.....
+*********************************************************************************/
+
+/////// ****** Change Dir before Playing
+// You can change numRound if you want.
+
 #include <iostream>
 #include <windows.h>
 #include <io.h>
@@ -79,15 +100,15 @@ void textLoader(string txt){
 float Possibility (int score){
     // 5.71751 35.0143 60.7052 64.3152 59.1922 69.4281 77.2093 57.8947 45.2877
     switch (score) {
-        case 0: return 5.71751; break;
-        case 2: return 35.0143; break;
-        case 3: return 60.7052; break;
-        case 4: return 64.3152; break;
-        case 5: return 59.1922; break;
-        case 6: return 69.4281; break;
-        case 7: return 77.2093; break;
-        case 8: return 57.8947; break;
-        case 9: return 45.2877; break;
+        case 0: return 5.71751;
+        case 2: return 35.0143;
+        case 3: return 60.7052;
+        case 4: return 64.3152;
+        case 5: return 59.1922;
+        case 6: return 69.4281;
+        case 7: return 77.2093;
+        case 8: return 57.8947;
+        case 9: return 45.2877;
     }
 }
 
@@ -95,6 +116,7 @@ int main() {
     //// File Stream
     string dir = "C:\\Users\\timni\\Poker-card-game\\";
 
+    //// File Reading
     ifstream myReadFile;
     myReadFile.open(dir + "probability.txt");
     string output;
@@ -102,98 +124,61 @@ int main() {
 
     for (int i = 0; i < 12; ++i) {
         probability2.push_back(0);
+        probability.push_back(0);
     }
-
 
     if (myReadFile.is_open()) {
         while (!myReadFile.eof()) {
             myReadFile >> output;
             s = output;
-            probability.push_back( stoi(s) );
         }
     }
 
-    wcout << endl << s.c_str() <<endl;
+    wcout<<endl;
 
-    wcout <<endl<< " File stream done\n\n";
+    ofstream outfile(dir + "probability.txt");
+    outfile.close();
 
-    for (int i = 0; i < 10; ++i) {
-        wcout<< probability[i];
-    }
-    wcout <<endl<< "\n\n File stream done";
-
-
-    /*
-    size_t pos = 0;
-    string delimiter = " ";
-    string token;
-
-    while ((pos = s.find(delimiter)) != string::npos) {
-        token = s.substr(0, pos);
-        if (item_count % 2 == 0){
-            date = token;
-        }if (item_count % 2 == 1){
-            account_number = token;
-        }
-        item_count++;
-        s.erase(0, pos + delimiter.length());
-    }
-    transaction_amount = s;
-*/
-
-    card cards;
-
-    //cards.setValue(2,heart);
-    //cards.display_card();
+    //// File Reading
 
     int numPlayers = 3;
     int numRounds = 10;
 
     ////////////////////////////////////////////////  Create Player
-    wcout << endl << "Create Players\n";
 
     vector<player> Player;  //Player[0] is the dealer
     Player.resize(numPlayers + 1);
 
-    wcout << endl << "Create Players Done\n";
-
-
     ////////////////////////////////////////////////  UI Here
-
-    wcout << "\n";
-    wcout << "$$$$$$$\\            $$\\                                  $$$$$$\\                                    \n";
-    wcout << "$$  __$$\\           $$ |                                $$  __$$\\                                   \n";
-    wcout << "$$ |  $$ | $$$$$$\\  $$ |  $$\\  $$$$$$\\   $$$$$$\\        $$ /  \\__| $$$$$$\\  $$$$$$\\$$$$\\   $$$$$$\\  \n";
-    wcout << "$$$$$$$  |$$  __$$\\ $$ | $$  |$$  __$$\\ $$  __$$\\       $$ |$$$$\\  \\____$$\\ $$  _$$  _$$\\ $$  __$$\\ \n";
-    wcout << "$$  ____/ $$ /  $$ |$$$$$$  / $$$$$$$$ |$$ |  \\__|      $$ |\\_$$ | $$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |\n";
-    wcout << "$$ |      $$ |  $$ |$$  _$$<  $$   ____|$$ |            $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|\n";
-    wcout << "$$ |      \\$$$$$$  |$$ | \\$$\\ \\$$$$$$$\\ $$ |            \\$$$$$$  |\\$$$$$$$ |$$ | $$ | $$ |\\$$$$$$$\\ \n";
-    wcout << "\\__|       \\______/ \\__|  \\__| \\_______|\\__|             \\______/  \\_______|\\__| \\__| \\__| \\_______|\n";
-    wcout << "                                                                                                    \n";
-    wcout << "                                                                                                    \n";
-    wcout << "                                                                                                    ";
-
-    wcout << "\nPoker Game";
 
 
     int inpNum;
     wchar_t inpStr[50];
 
     while (true) {
-        if (finish) {    //Check termination conditions
-            return 0;
-        }
-
+        if (finish) return 0; //Check termination conditions
 
         ////Main menu
-        wcout << "1. Start" << endl;
-        wcout << "2. How to Play" << endl;
-        wcout << "3. Settings" << endl;
-        wcout << "4. Exit" << endl;
+        wcout << "\n";
+        wcout << "$$$$$$$\\            $$\\                                  $$$$$$\\                                    \n";
+        wcout << "$$  __$$\\           $$ |                                $$  __$$\\                                   \n";
+        wcout << "$$ |  $$ | $$$$$$\\  $$ |  $$\\  $$$$$$\\   $$$$$$\\        $$ /  \\__| $$$$$$\\  $$$$$$\\$$$$\\   $$$$$$\\  \n";
+        wcout << "$$$$$$$  |$$  __$$\\ $$ | $$  |$$  __$$\\ $$  __$$\\       $$ |$$$$\\  \\____$$\\ $$  _$$  _$$\\ $$  __$$\\ \n";
+        wcout << "$$  ____/ $$ /  $$ |$$$$$$  / $$$$$$$$ |$$ |  \\__|      $$ |\\_$$ | $$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |\n";
+        wcout << "$$ |      $$ |  $$ |$$  _$$<  $$   ____|$$ |            $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|\n";
+        wcout << "$$ |      \\$$$$$$  |$$ | \\$$\\ \\$$$$$$$\\ $$ |            \\$$$$$$  |\\$$$$$$$ |$$ | $$ | $$ |\\$$$$$$$\\ \n";
+        wcout << "\\__|       \\______/ \\__|  \\__| \\_______|\\__|             \\______/  \\_______|\\__| \\__| \\__| \\_______|\n";
+        wcout << "                                                                                                    \n";
+        wcout << "                                                                                                    \n";
+        wcout << "                                                                                                    ";
+        wcout << endl ;
+        wcout << "\t1. Start" << endl;
+        wcout << "\t2. How to Play" << endl;
+        wcout << "\t3. Settings" << endl;
+        wcout << "\t4. Exit" << endl;
 
         wcout << "\nEnter number : ";
         wcin >> inpNum;
-        wcout << endl;
 
         //Start
         if (inpNum == 1) {
@@ -201,44 +186,41 @@ int main() {
             wcout << "\nEnter your name : ";
             wcin >> inpStr;
             wcout << endl;
-            wcout<<"Name : "<<inpStr;
+
+            wcout << "\t";
+            textLoader("Hello ") ;
+            wcout<<inpStr;
+
             wstring ws(inpStr);
             string str(ws.begin(), ws.end());
             Player[1].setPlayerName(str);
-            wcout<<endl;
-            wcout<<"Name : "<< Player[1].getPlayerName().c_str();
-            wcout<<endl;
-
+            wcout<<endl <<endl;
+            wcout << "Let's Begin the Game.."<<endl<<endl;
             string playerNameSet[10] = {"Shamika","Bari","Melodi","Rolland","Peter","Roger","Jessia","Claudia","Robbie"};
 
-            for (int i = 2; i < numPlayers; ++i) {
+            for (int i = 2; i < Player.size(); ++i) {
                 Player[i].setPlayerName(playerNameSet[i]);
             }
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < numRounds; i++) {
                 ////////////////////////////////////////////////  Deck Create and Shuffle
                 deck deckOfCards;
 
                 deckOfCards.show();
 
+                wcout << endl << endl << "Shuffling ....." <<endl <<endl;
                 for (int j=0; j<=i; j++){
                     deckOfCards.shuffle();
                 }
-                wcout << endl;
+                system("cls");
+                wcout << endl <<endl;
+                textLoader("Card Pack Shuffled....\n\n");
 
-                wcout << endl;
-                deckOfCards.show();
-                wcout << endl;
-                wcout << endl;
 
                 ////////////////////////////////////////////////  Card Distribution
                 //erase first two values
                 deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
                 deckOfCards.deckOfCards.erase(deckOfCards.deckOfCards.begin());
-
-                wcout << endl;
-                deckOfCards.show();
-                wcout << endl;
 
                 for (int i = 0; i < 4; i++) {
                     card newCard;
@@ -253,19 +235,22 @@ int main() {
                 }
 
                 wcout << endl;
-                Player[0].hand.back().display_card();
-                Player[0].getHandCard(0).display_card();
+
+                textLoader("Distributing....\n\n");
+
+                system("cls");
                 wcout << endl;
 
-                wcout << "displaycard\n\n";
-
-                for (int i = 0; i < 4; i++) {
+                Player[0].setPlayerName("Dealer");
+                system("cls");
+                for (int i = 0; i < 2; i++) {
+                    wcout << Player[i].getName().c_str() << "'s Hand \t";
                     for (int j = 0; j < 5; j++) {
                         Player[i].hand[j].display_card();
+                        wcout << " ";
                     }
-                    wcout << endl;
+                    wcout << endl << endl;;
                 }
-
                 wcout << endl;
 
                 ////////////////////////////////////////////////  Calculate Scores
@@ -285,28 +270,33 @@ int main() {
                         // Player [0] is Dealer
                         // Player [1] is Player
                         // Other Players are controlled by game logic.
+                    if (j == 1){
+                        wcout << "\nYour Score = " << tempScore;
+                        wcout << "\t\tHigh Card = ";
+                        Player[0].highCard().display_card();
+
+                        wcout << "\nDealer's Score = " << tempScore;
+                        wcout << "\tHigh Card = ";
+                        Player[1].highCard().display_card();
+                    }
 
                     wchar_t withdraw_string[10];
                     //// In here we need to let user and players to left this hand
                     // For user
                     if (j == 1) {
-                        wcout << "\nDo you need to Withdraw ? ";
+                        wcout << "\n\nDo you need to Withdraw ? ";
                         wcin >> withdraw_string;
                         wstring withdraw_s(withdraw_string);
                         string withdraw_str(withdraw_s.begin(), withdraw_s.end());
-                        wcout << "W => " << withdraw_str.c_str();
 
                         if (withdraw_str == "Y" ||withdraw_str == "y"  ) {
                             wcout << endl;
                             Player[1].setStatus(false);
-                            wcout << "Wait Until Round Finish.\n";
+                            wcout << "Wait Until Round Finishes...\n";
                         }
                         else {
-                            wcout << endl;
                             Player[1].setStatus(true);
-                            wcout << "Play \n";
                         }
-
                     }
 
                     // For Other Players Except Dealer
@@ -331,19 +321,11 @@ int main() {
                             else {
                                 Player[j].setStatus(true);
                             }
-
-                            wcout << "num = " << randNum << endl;
-                            wcout << "Possibility = " << playerRandNum << endl;
-                            wcout << "tempScore = " << tempScore << endl;
-
                         }
                         else {
                             Player[j].setStatus(false);
                         }
                     }
-
-
-                    wcout << "Me Score = " << Player[1].getStatus() << endl;
 
                     if (Player[j].getStatus() == true){
                         arrScore.push_back(tempScore);    //Add score to the hand score array
@@ -355,43 +337,21 @@ int main() {
                     if (tempScore == 0) {   //Take if it is a high card combination
                         highCardCount++;
                     }
-
-                    wcout << "\nScore = " << tempScore;
-                    wcout << "\tHigh Card = ";
-                    Player[j].highCard().display_card();
-                    wcout << endl;
-
                 }
 
-                wcout << endl << "arrScore = " << arrScore.size() <<endl;
-
-                for (int i = 0; i < arrScore.size(); i++) {
-                    wcout << arrScore[i] << " ";
-                }
 
                 int tempHighScore = arrScore[0];
                 int winnerPosition = 0;
                 int tempCount = 0;
 
-                wcout << endl;
-                for (int i = 0; i < arrScore.size(); i++) {
-                    wcout << arrScore[i] << " ";
-                }
-
-                wcout << endl << "Size = " << arrScore.size() << endl;
-
                 for (int i = 0; i < arrScore.size() ; i++) {
-                    wcout<< "arrScore["<<i<<"] is " << arrScore[i] <<endl;
-                    wcout<< "tempHighScore"<< tempHighScore <<endl;
                     if (tempHighScore < arrScore[i]) {
-                        wcout << tempHighScore << " "<< arrScore[i]  << i<<endl;
                         tempHighScore = arrScore[i];
                         winnerPosition = i;
                     }
                 }
-                wcout << endl << tempHighScore << " " << winnerPosition;
 
-            /*    //Check if two people have The Highest Val
+    //Check if two people have The Highest Val
                 for (int i = 0; i < 4; i++) {
                     if (arrScore[i] == tempHighScore && winnerPosition != i) {
                         //wcout << "\nDuplicate";
@@ -448,34 +408,25 @@ int main() {
                                 break;
                         }
                     }
-                }*/
+                }
 
                 // Now we have checked who wins
                 // If there are two winners and that also calculated.
                 // But if that also get tie then that part is to be added. (Scores will be given to both.)
 
-                /*
-                    winnerPosition is the position of winner in Player array
-                    Player[winnerPosition] is winner
-                    tempHighScore is his score
-
-                    Others score can be taken by playerHandScore
-
-                 */
-
-
                 wcout << endl;
                 wcout << "Winner is " << winnerPosition << "   Score : " << tempHighScore;
                 probability2[tempHighScore]++;
-                wcout << "\n\nOthers Score \n";
+
+                wcout << "\n\nScore Card\n\n";
 
                 /////////// Add Scores to Main Score
 
                 for (int i = 0; i < Player.size() ; i++) {
                     tempScore = Player[i].getPlayerHandScore();
-                    //Player[i].addPlayerScore(tempScore);
 
                     if (i == winnerPosition){
+                        Player[winnerPosition].addPlayerScore(10);
                         if (tie = true) {
                             for (int j=0; j<tiePositions.size(); j++){
                                 Player[j].addPlayerScore(10);
@@ -492,22 +443,26 @@ int main() {
                     else {
                         Player[i].addPlayerScore(-1);
                     }
-
-                    wcout << "Player " << i << "   Score : " << arrScore[i] << "   Total Score : " << Player[i].getPlayerScore()
-                          << endl;
                     probability[tempScore]++;
                 }
 
+                float totScore = 0;
+                float Prob = 0;
 
-
-                wcout<<endl;
-                wcout<<endl;
-                for (int i = 0; i < Player.size() ; i++) {
-                    wcout << "Player " << i << "   Score : " << arrScore[i] << "   Total Score : " << Player[i].getPlayerScore()
-                          << endl;
+                for (int i = 1; i < Player.size() ; i++) {
+                    totScore += Player[i].getPlayerScore();
                 }
 
+                for (int i = 1; i < Player.size() ; i++) {
+                    Prob = (Player[i].getPlayerScore()*100/totScore);
+                    wcout << Player[i].getName().c_str() << "\t\t"
+                    << "Score : " << arrScore[i]
+                    << "   Total Score : " << Player[i].getPlayerScore()
+                    << "  Probability  " << Prob << " %"<< endl;
+                }
 
+                wcout << endl;
+                system("pause");
                 ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen & Score Boards are Updated.
 
                 //Players cards are hidden
@@ -518,26 +473,22 @@ int main() {
 
                 wcout <<endl<< "\n\n";
                 {   //Remove Later
-                    for (int i = 0; i < 10; ++i) {
-                        wcout << probability[i] << " ";
-                    }
-                    wcout << endl << "\n\n File stream done\n";
-                    for (int i = 0; i < 10; ++i) {
-                        wcout << probability2[i] << " ";
-                    }
 
-                    wcout << endl << "\n\n";
 
-                    ofstream outfile(dir + "probability.txt");
-                    for (int i = 0; i < 10; ++i) {
-                        outfile << probability[i] << endl;
-                    }
-                    for (int i = 0; i < 10; ++i) {
-                        outfile << probability2[i] << endl;
-                    }
+                    ofstream outfile(dir + "probability.txt",ios_base::app);
+                    for (int i = 0; i < Player.size() ; i++) {
 
+                        Prob = (Player[i].getPlayerScore()*100/totScore);
+                        outfile << Player[i].getName().c_str() << "\t\t"
+                              << "Score : " << arrScore[i]
+                              << "   Total Score : " << Player[i].getPlayerScore()
+                              << "  Probability  " << Prob << " %"<< endl;
+                    }
+                    outfile <<endl;
                     outfile.close();
                 }
+
+                system("cls");
 
                 tiePositions.clear();   // If tie Positions cleared
                 tie = false;            // Make tie to untie
@@ -545,10 +496,28 @@ int main() {
                 arrScore.clear();
             }
 
+
+            ofstream outfile(dir + "probability.txt");
+            for (int i = 0; i < Player.size() ; i++) {
+                outfile << endl;
+                outfile << "Number of Players Played " << numPlayers <<endl;
+                outfile << "Number of Rounds Played " << numRounds <<endl;
+            }
+
+            outfile.close();
         }
             //How to Play
         else if (inpNum == 2) {
-
+            wcout << "In this Game we have Dealer, You as a Player and Other Players.\n";
+            wcout << "By default there are 3 Players and Dealer & There are 10 rounds.\n";
+            wcout << "\n";
+            wcout << "The Dealer Plays with you but he don't gain any points.\n";
+            wcout << "Their actions controlled by the programme. This is done by using Probability.\n";
+            wcout << "For that the probability is calculated using 80,000 tests.\n";
+            wcout << "Then that values multiplied with a random value to give some randomness.\n";
+            wcout << "\n";
+            wcout << "Happy Gaming.....\n";
+            wcout << "\n";
         }
             //Settings
         else if (inpNum == 3) {
@@ -581,22 +550,6 @@ int main() {
         }
 
     }
-
-
-
-    //5.79121
-    //34.9811
-    //61.0685
-    //64.2276
-    //57.6271
-    //69.3639
-    //71.6981
-    //62.5
-    //45.7143
-
-    //Winning Probability if each Score comes.
-
-    // If probability is 20% > the players will play && Dealers Card
 
     return 0;
 }

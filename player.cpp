@@ -8,7 +8,6 @@
 using namespace std;
 
 player::player() {
-    wcout << "Me Called \n";
     playerId = nextId++;
     playerName = "Tim";
     playerScore = 0;
@@ -22,7 +21,6 @@ string player::getName() {
 }
 
 int player::getId() {
-    wcout << playerId;
     return playerId;
 }
 
@@ -40,22 +38,10 @@ card player::getHandCard(int i) {
 int player::score() {
     vector<card> hand_Copy;
 
-    //for (int i=0; i< 5; i++){
-      //  hand_Copy[i] = hand [i];
-    //}
-
 // enum suit {clubs, heart, spades, diamond};
 // ♣0 ♥1 ♠2 ♦3
 
     //Taking values and suites to two arrays
-    wcout<<endl<<"Card = ";
-    for (int i=0; i<5; i++) {
-        hand[i].display_card();
-        wcout<<" ";
-    }
-
-
-
     for (int i=0; i<4; i++) {
         arrSuit[i] = 0;
     }
@@ -87,16 +73,6 @@ int player::score() {
             case 12: arrVal[12]++; break;
             case 13: arrVal[13]++; break;
         }
-    }
-
-    wcout << endl;
-
-    for (int i=0; i<4; i++) {
-        wcout << arrSuit[i] << " ";
-    }
-    wcout << endl;
-    for (int i=1; i<15; i++) {
-        wcout << arrVal[i] << " ";
     }
 
     int highCard, onePair, twoPair, threeKind, straight, flush, fullHouse, fourKind, straightFlush, sameSuit;
