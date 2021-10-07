@@ -236,6 +236,14 @@ int player::getPlayerScore() {
     return playerScore;
 }
 
+void player::setPlayerName(string name) {
+    playerName = name;
+}
+
+string player::getPlayerName() {
+    return playerName;
+}
+
 
 
 //1. High card: None of the following combinations and highest card value is considered (2-2, 3-3, …, 10-10, Jack-11, Queen-12, King-13, Aces-14)

@@ -299,6 +299,7 @@ int main() {
 
 
     int inpNum;
+    wchar_t inpStr[50];
 
     while (true) {
         if (finish) {    //Check termination conditions
@@ -318,6 +319,22 @@ int main() {
         //Start
         if (inpNum == 1) {
             //puzzleGen();
+            wcout << "\nEnter your name : ";
+            wcin >> inpStr;
+            wcout << endl;
+            wcout<<"Name : "<<inpStr;
+            wstring ws(inpStr);
+            string str(ws.begin(), ws.end());
+            Player[1].setPlayerName(str);
+            wcout<<endl;
+            wcout<<"Name : "<< Player[1].getPlayerName().c_str();
+            wcout<<endl;
+
+            string playerNameSet[10] = {"Shamika","Bari","Melodi","Rolland","Peter","Roger","Jessia","Claudia","Robbie"};
+
+            for (int i = 2; i < numPlayers; ++i) {
+                Player[i].setPlayerName(playerNameSet[i]);
+            }
         }
             //How to Play
         else if (inpNum == 2) {

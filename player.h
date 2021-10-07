@@ -31,6 +31,8 @@ public:
     int score();
     int getPlayerHandScore();
     int getPlayerScore();
+    void setPlayerName(string name);
+    string getPlayerName();
 
 
     void setPlayerScore(int val);
