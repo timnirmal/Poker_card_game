@@ -282,8 +282,12 @@ int main() {
                     Player[j].setPlayerHandScore(tempScore);    //Set Player's this hand score
 
                     /////////////////  We need to let players withdraw before moving further
+                        // Player [0] is Dealer
+                        // Player [1] is Player
+                        // Other Players are controlled by game logic.
 
                     wchar_t withdraw_string[10];
+                    //// In here we need to let user and players to left this hand
                     // For user
                     if (j == 1) {
                         wcout << "\nDo you need to Withdraw ? ";
@@ -465,14 +469,22 @@ int main() {
                 probability2[tempHighScore]++;
                 wcout << "\n\nOthers Score \n";
 
-
+                /////////// Add Scores to Main Score
 
                 for (int i = 0; i < Player.size() ; i++) {
                     tempScore = Player[i].getPlayerHandScore();
                     //Player[i].addPlayerScore(tempScore);
 
                     if (i == winnerPosition){
-                        Player[winnerPosition].addPlayerScore(10);
+                        if (tie = true) {
+                            for (int j=0; j<tiePositions.size(); j++){
+                                Player[j].addPlayerScore(10);
+                            }
+                        }
+                        else{
+                            Player[winnerPosition].addPlayerScore(10);
+                        }
+
                     }
                     else if (arrScore[i] == -1){
                         Player[i].addPlayerScore(0);
@@ -496,72 +508,42 @@ int main() {
                 }
 
 
-                ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen
-                // But the score is not the actual value goes into Score Board.
+                ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen & Score Boards are Updated.
 
-                //Players cards are hiden
+                //Players cards are hidden
                 //Dealers cards are visible
 
                 // Probability
-                // User Can Leave round if he wants
-                //
+                // Log File
 
                 wcout <<endl<< "\n\n";
+                {   //Remove Later
+                    for (int i = 0; i < 10; ++i) {
+                        wcout << probability[i] << " ";
+                    }
+                    wcout << endl << "\n\n File stream done\n";
+                    for (int i = 0; i < 10; ++i) {
+                        wcout << probability2[i] << " ";
+                    }
 
-                for (int i = 0; i < 10; ++i) {
-                    wcout<< probability[i] << " ";
+                    wcout << endl << "\n\n";
+
+                    ofstream outfile(dir + "probability.txt");
+                    for (int i = 0; i < 10; ++i) {
+                        outfile << probability[i] << endl;
+                    }
+                    for (int i = 0; i < 10; ++i) {
+                        outfile << probability2[i] << endl;
+                    }
+
+                    outfile.close();
                 }
-                wcout <<endl<< "\n\n File stream done\n";
-                for (int i = 0; i < 10; ++i) {
-                    wcout<< probability2[i] << " ";
-                }
 
-                wcout <<endl<< "\n\n";
-
-                ofstream outfile (dir + "probability.txt");
-                for (int i = 0; i < 10; ++i) {
-                    outfile << probability[i] <<endl;
-                }
-                for (int i = 0; i < 10; ++i) {
-                    outfile << probability2[i] <<endl;
-                }
-
-                outfile.close();
-
-
-                tiePositions.clear();
-                tie = false;
-
-                wcout<<"\n";
-                for (int i = 0; i < 10; ++i) {
-                    wcout<< probability[i] << " ";
-                }
-                wcout <<endl;
-
-                for (int i = 0; i < 10; ++i) {
-                    wcout<< probability2[i] << " ";
-                }
-                wcout <<endl;
+                tiePositions.clear();   // If tie Positions cleared
+                tie = false;            // Make tie to untie
 
                 arrScore.clear();
             }
-
-            wcout<<"\n";
-            for (int i = 0; i < 10; ++i) {
-                wcout<< probability[i] << " ";
-            }
-            wcout <<endl<< "\n\n File stream done";
-
-            for (int i = 0; i < 10; ++i) {
-                wcout<< probability2[i] << " ";
-            }
-
-
-            //// In here we need to let user and players to left the game
-            // Player [0] is Dealer
-            // Player [1] is Player
-            // Other Players are controlled by game logic.
-
 
         }
             //How to Play
