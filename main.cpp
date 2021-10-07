@@ -3,6 +3,7 @@
 #include <io.h>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "deck.h"
 #include "player.h"
@@ -72,6 +73,21 @@ void textLoader(string txt){
             Sleep(40);
         }
         std::wcout << c;
+    }
+}
+
+float Possibility (int score){
+    // 5.71751 35.0143 60.7052 64.3152 59.1922 69.4281 77.2093 57.8947 45.2877
+    switch (score) {
+        case 0: return 5.71751; break;
+        case 2: return 35.0143; break;
+        case 3: return 60.7052; break;
+        case 4: return 64.3152; break;
+        case 5: return 59.1922; break;
+        case 6: return 69.4281; break;
+        case 7: return 77.2093; break;
+        case 8: return 57.8947; break;
+        case 9: return 45.2877; break;
     }
 }
 
@@ -199,7 +215,7 @@ int main() {
                 Player[i].setPlayerName(playerNameSet[i]);
             }
 
-            for (int i = 0; i < 20000; i++) {
+            for (int i = 0; i < 2; i++) {
                 ////////////////////////////////////////////////  Deck Create and Shuffle
                 deck deckOfCards;
 
@@ -256,7 +272,9 @@ int main() {
                 //Calculating Score of Each Player
                 int highCardCount = 0;      //Count if all are high cards.
                 int tempScore;              // to Keep player score of each round of each player
-                int arrScore[4]; //4 Players
+                vector<int> arrScore; //4 Players
+
+                int arrScoreLength = 0;
 
                 for (int j = 0; j < 4; j++) {
                     tempScore = Player[j].score();  //Calculate Player score
@@ -265,22 +283,70 @@ int main() {
 
                     /////////////////  We need to let players withdraw before moving further
 
+                    wchar_t withdraw_string[10];
                     // For user
                     if (j == 1) {
                         wcout << "\nDo you need to Withdraw ? ";
-                        wcout << inpStr;
-                        wstring withdraw_s(inpStr);
-                        string withdraw_str(ws.begin(), ws.end());
+                        wcin >> withdraw_string;
+                        wstring withdraw_s(withdraw_string);
+                        string withdraw_str(withdraw_s.begin(), withdraw_s.end());
+                        wcout << "W => " << withdraw_str.c_str();
 
-                        if (withdraw_str == "Y") {
+                        if (withdraw_str == "Y" ||withdraw_str == "y"  ) {
                             wcout << endl;
                             Player[1].setStatus(false);
                             wcout << "Wait Until Round Finish.\n";
                         }
+                        else {
+                            wcout << endl;
+                            Player[1].setStatus(true);
+                            wcout << "Play \n";
+                        }
+
                     }
 
-                    // For Other Players Except
-                    arrScore[j] = tempScore;    //Add score to the hand score array
+                    // For Other Players Except Dealer
+                    if (j > 1){
+                        if (tempScore >= Player[0].getPlayerHandScore()){
+                            // Equal or Larger than Dealers Score
+                            // 5.71751 35.0143 60.7052 64.3152 59.1922 69.4281 77.2093 57.8947 45.2877
+                            // Let's get possibilities higher than 20% to play further
+                            // In that case only High Card combination
+
+                            srand(time(0));
+                            float randNum;
+                            for (int k=0; k < i+j+1; k++){
+                                randNum = (rand() % 200 + 1) / 100.0;
+                            }
+                            float playerRandNum = randNum * Possibility(tempScore);
+
+                            // If this value less than 0.2 then user will be withdrawn
+                            if (playerRandNum < 0.2){
+                                Player[j].setStatus(false);
+                            }
+                            else {
+                                Player[j].setStatus(true);
+                            }
+
+                            wcout << "num = " << randNum << endl;
+                            wcout << "Possibility = " << playerRandNum << endl;
+                            wcout << "tempScore = " << tempScore << endl;
+
+                        }
+                        else {
+                            Player[j].setStatus(false);
+                        }
+                    }
+
+
+                    wcout << "Me Score = " << Player[1].getStatus() << endl;
+
+                    if (Player[j].getStatus() == true){
+                        arrScore.push_back(tempScore);    //Add score to the hand score array
+                        arrScoreLength++;
+                    }else{
+                        arrScore.push_back(-1);
+                    }
 
                     if (tempScore == 0) {   //Take if it is a high card combination
                         highCardCount++;
@@ -290,11 +356,12 @@ int main() {
                     wcout << "\tHigh Card = ";
                     Player[j].highCard().display_card();
                     wcout << endl;
+
                 }
 
-                wcout << endl;
+                wcout << endl << "arrScore = " << arrScore.size() <<endl;
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < arrScore.size(); i++) {
                     wcout << arrScore[i] << " ";
                 }
 
@@ -302,10 +369,18 @@ int main() {
                 int winnerPosition = 0;
                 int tempCount = 0;
 
-                int arrScoreLength = sizeof(arrScore)/sizeof(arrScore[0]);
+                wcout << endl;
+                for (int i = 0; i < arrScore.size(); i++) {
+                    wcout << arrScore[i] << " ";
+                }
 
-                for (int i = 0; i < arrScoreLength - 1; i++) {
+                wcout << endl << "Size = " << arrScore.size() << endl;
+
+                for (int i = 0; i < arrScore.size() ; i++) {
+                    wcout<< "arrScore["<<i<<"] is " << arrScore[i] <<endl;
+                    wcout<< "tempHighScore"<< tempHighScore <<endl;
                     if (tempHighScore < arrScore[i]) {
+                        wcout << tempHighScore << " "<< arrScore[i]  << i<<endl;
                         tempHighScore = arrScore[i];
                         winnerPosition = i;
                     }
@@ -389,14 +464,37 @@ int main() {
                 wcout << "Winner is " << winnerPosition << "   Score : " << tempHighScore;
                 probability2[tempHighScore]++;
                 wcout << "\n\nOthers Score \n";
-                for (int i = 0; i < 4; i++) {
+
+
+
+                for (int i = 0; i < Player.size() ; i++) {
                     tempScore = Player[i].getPlayerHandScore();
-                    Player[i].addPlayerScore(tempScore);
-                    wcout << "Player " << i << "   Score : " << tempScore << "   Total Score : " << Player[i].getPlayerScore()
+                    //Player[i].addPlayerScore(tempScore);
+
+                    if (i == winnerPosition){
+                        Player[winnerPosition].addPlayerScore(10);
+                    }
+                    else if (arrScore[i] == -1){
+                        Player[i].addPlayerScore(0);
+                    }
+                    else {
+                        Player[i].addPlayerScore(-1);
+                    }
+
+                    wcout << "Player " << i << "   Score : " << arrScore[i] << "   Total Score : " << Player[i].getPlayerScore()
                           << endl;
                     probability[tempScore]++;
-
                 }
+
+
+
+                wcout<<endl;
+                wcout<<endl;
+                for (int i = 0; i < Player.size() ; i++) {
+                    wcout << "Player " << i << "   Score : " << arrScore[i] << "   Total Score : " << Player[i].getPlayerScore()
+                          << endl;
+                }
+
 
                 ////////////////////////////////////////////////  Each Hand Score Calculation Done & Winner is Chosen
                 // But the score is not the actual value goes into Score Board.
@@ -444,6 +542,8 @@ int main() {
                     wcout<< probability2[i] << " ";
                 }
                 wcout <<endl;
+
+                arrScore.clear();
             }
 
             wcout<<"\n";
